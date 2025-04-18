@@ -1,0 +1,120 @@
+Exercícios – Aula 01 (React com Create React App)
+
+📁 Exercício 1 – Criação de Aplicação React
+
+✅ Exemplo resolvido
+Para criar o seu primeiro aplicativo React com Create React App, siga os passos abaixo:
+
+No terminal, execute o comando:
+npx create-react-app 01tut
+
+Navegue para a pasta do projeto:
+cd 01tut
+
+Entre na pasta src:
+cd src
+
+Deletar os arquivos:
+
+App.test.js
+
+reportWebVitals.js
+
+setupTests.js
+
+No arquivo index.js, remova a linha de importação e a execução da função reportWebVitals().
+
+No terminal, execute o comando para iniciar o servidor de desenvolvimento:
+npm start
+
+Saída esperada: O aplicativo React será aberto no seu navegador, mostrando a página padrão do CRA.
+
+✍️ Agora é com você
+Tarefa:
+
+Crie uma nova aplicação React com Create React App.
+
+No arquivo src/App.js, altere o conteúdo do <p> para a seguinte frase:
+Edit src/App.js and save to see changes
+
+Execute o comando npm start no terminal e visualize a alteração.
+
+📂 Exercício 2 – Entendendo os Scripts no package.json
+
+✅ Exemplo resolvido
+No arquivo package.json, você verá uma seção chamada scripts com várias opções. Alguns exemplos:
+
+npm start: Inicia o servidor de desenvolvimento.
+
+npm test: Executa os testes.
+
+npm run build: Cria uma versão otimizada para produção.
+
+npm run eject: Expõe todas as configurações internas do CRA.
+
+✍️ Agora é com você
+Tarefa:
+
+Abra o arquivo package.json da sua aplicação criada.
+
+Verifique os scripts existentes e execute o comando npm start para iniciar o servidor.
+
+Verifique no terminal a saída de npm start e perceba como o CRA compila e serve o seu código.
+
+📂 Exercício 3 – Modificando o Conteúdo no App.js
+
+✅ Exemplo resolvido
+Arquivo: src/App.js
+Alterar o conteúdo do <p> para o seguinte:
+
+<p>Edit <code>src/App.js</code> and save to see changes</p>
+O aplicativo deve exibir a frase alterada no navegador.
+
+✍️ Agora é com você
+Tarefa:
+
+No arquivo src/App.js, altere o conteúdo do <p> para:
+Bem-vindo ao meu aplicativo React!
+
+Salve o arquivo e veja a alteração refletida no navegador.
+
+📂 Exercício 4 – Deletando Arquivos no src
+
+✅ Exemplo resolvido
+No CRA, os arquivos de teste e de métricas de performance são gerados por padrão. Para simplificar o seu projeto, podemos deletar alguns arquivos:
+
+Abra a pasta src do seu projeto.
+
+Delete os arquivos:
+
+App.test.js
+
+reportWebVitals.js
+
+setupTests.js
+
+✍️ Agora é com você
+Tarefa:
+
+No seu projeto React, delete os arquivos mencionados acima.
+
+Confirme que seu projeto ainda funciona corretamente, sem erros de importação.
+
+📂 Exercício 5 – Utilizando o npm run eject
+
+✅ Exemplo resolvido
+Caso queira personalizar profundamente o seu projeto React, pode usar o comando npm run eject. Porém, lembre-se de que este comando é irreversível.
+
+No terminal, execute o comando:
+npm run eject
+
+O CRA irá "ejetar" e mostrar as configurações internas, incluindo configurações do Webpack, Babel e ESLint.
+
+✍️ Agora é com você
+Tarefa:
+
+Execute o comando npm run eject no seu projeto.
+
+Observe as alterações feitas na estrutura do seu projeto.
+
+Lembre-se de que, após isso, você terá que gerenciar manualmente as configurações do Webpack e do Babel.

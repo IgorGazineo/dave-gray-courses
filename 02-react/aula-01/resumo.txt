@@ -1,0 +1,62 @@
+🧠 Resumo – Aula 01 (React com Create React App)
+
+Nesta aula, foi feito o primeiro setup de um projeto React utilizando o Create React App (CRA), uma ferramenta oficial para iniciar projetos com uma estrutura configurada automaticamente.
+
+• Criação do projeto:
+Com o comando
+npx create-react-app 01tut
+Explicação:
+O comando npx executa pacotes diretamente do repositório npm sem precisar instalar globalmente.
+O create-react-app é uma ferramenta oficial do React que configura automaticamente um projeto com todas as dependências e arquivos essenciais.
+01tut é o nome da pasta onde o projeto será criado.
+
+• Navegação até o projeto:
+cd 01tut
+Acessa a pasta do projeto recém-criado.
+
+• Abertura do projeto no VS Code:
+code .
+Abre a pasta atual no editor Visual Studio Code.
+
+• Limpeza de arquivos desnecessários:
+Na pasta src, foram deletados os arquivos:
+
+App.test.js
+
+reportWebVitals.js
+
+setupTests.js
+
+Esses arquivos estão relacionados a testes e métricas de performance, e como não serão usados nesse momento, foram removidos para simplificar o projeto.
+
+• Explicação dos scripts no package.json:
+O arquivo package.json contém um objeto chamado "scripts", que define comandos personalizados que podem ser executados no terminal com npm run.
+Os principais scripts padrão criados pelo CRA são:
+
+"start": inicia o servidor de desenvolvimento
+
+"build": gera a versão final do app para produção
+
+"test": executa testes automatizados
+
+"eject": expõe as configurações internas do CRA (irreversível)
+
+O comando eject expõe todas as configurações internas que o CRA mantém "escondidas" por padrão — como configurações do Webpack, Babel, ESLint, e outros.
+
+• Remoção da função reportWebVitals:
+No arquivo index.js, a linha que importava e executava a função reportWebVitals() foi removida, já que não será usada. Essa função serviria para medir métricas de performance.
+
+• Execução da aplicação:
+O comando
+npm start
+inicia o servidor local de desenvolvimento e abre o navegador com o app React rodando (geralmente em http://localhost:3000).
+
+• Modificação do componente App:
+No arquivo App.js, foi alterado o conteúdo da tag <p> para:
+Edit <code>src/App.js</code> and save to see changes.
+Essa modificação permite verificar que o React está funcionando corretamente, pois qualquer alteração no componente é refletida automaticamente na interface graças ao hot reload.
+
+• Finalização temporária da aplicação:
+Para encerrar o servidor local, foi usado o atalho de teclado:
+Ctrl + C
+
