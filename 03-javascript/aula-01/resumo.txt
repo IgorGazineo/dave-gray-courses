@@ -1,0 +1,26 @@
+Resumo – Aula de JavaScript
+Na aula, foram abordados os 4 tipos de dados comuns em JavaScript:
+
+String: Um tipo de dado usado para representar texto. Exemplo: "Dave"
+
+Boolean: Um tipo de dado que pode ser verdadeiro ou falso. Exemplo: true ou false
+
+Number: Usado para representar números, tanto inteiros quanto decimais. Exemplo: 42
+
+Undefined: Um tipo especial que representa uma variável que foi declarada, mas não recebeu valor ainda. Exemplo: let myVariable;
+
+Para verificar o tipo de uma variável, você pode usar o operador typeof. Ele retorna uma string que representa o tipo da variável.
+
+Exemplos de uso do typeof:
+typeof "Dave" retorna "string"
+
+typeof 42 retorna "number"
+
+typeof true retorna "boolean"
+
+typeof myVariable (quando myVariable não foi inicializada) retorna "undefined"
+
+A aula também mostrou o uso da função alert() para exibir uma mensagem em uma caixa de alerta no navegador. Exemplo:
+
+alert("Hello World!")
+
