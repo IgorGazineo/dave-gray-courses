@@ -1,0 +1,117 @@
+
+Exercícios – Aula 01 (Node.js Básico)
+
+📁 Exercício 1 – Criação de Arquivo e Execução
+
+✅ Exemplo resolvido  
+Arquivo: exemplo.js  
+console.log('Este é meu primeiro código em Node.js!');
+
+Execução no terminal:  
+node exemplo.js
+
+Saída esperada:  
+Este é meu primeiro código em Node.js!
+
+✍️ Agora é com você  
+Tarefa: Crie um arquivo chamado hello.js que exiba a frase:  
+Meu primeiro script com Node.js
+
+🧠 Exercício 2 – Módulo os
+
+✅ Exemplo resolvido  
+Arquivo: sistema.js  
+const os = require('os');  
+console.log('Sistema operacional:', os.type());  
+console.log('Versão:', os.version());  
+console.log('Diretório do usuário:', os.homedir());
+
+Execução no terminal:  
+node sistema.js
+
+✍️ Agora é com você  
+Tarefa: Crie um arquivo chamado meusistema.js que exiba:  
+- O tipo do sistema operacional  
+- A versão do sistema  
+- O diretório do usuário
+
+📂 Exercício 3 – Módulo path
+
+✅ Exemplo resolvido  
+Arquivo: caminho.js  
+const path = require('path');  
+console.log('Nome do arquivo:', path.basename(__filename));  
+console.log('Diretório atual:', __dirname);  
+console.log('Caminho completo:', __filename);
+
+✍️ Agora é com você  
+Tarefa: Crie um arquivo chamado meucaminho.js que exiba:  
+- O nome do arquivo  
+- O diretório atual  
+- O caminho completo do arquivo
+
+🧩 Exercício 4 – Módulo Personalizado
+
+✅ Exemplo resolvido  
+Arquivo: math.js  
+function add(a, b) {  
+  return a + b;  
+}  
+function subtract(a, b) {  
+  return a - b;  
+}  
+module.exports = { add, subtract };
+
+Arquivo: app.js  
+const math = require('./math');  
+console.log('Soma:', math.add(5, 3));  
+console.log('Subtração:', math.subtract(10, 4));
+
+Execução:  
+node app.js
+
+✍️ Agora é com você  
+Tarefa:  
+1. Crie um arquivo chamado funcoes.js com duas funções:  
+   - multiplicação  
+   - divisão  
+2. Crie um arquivo chamado operacoes.js que importe essas funções e exiba o resultado da multiplicação e da divisão de dois números.
+
+🔁 Exercício 5 – Exportação alternativa com exports
+
+✅ Exemplo resolvido  
+Arquivo: math.js  
+exports.add = (a, b) => a + b;  
+exports.subtract = (a, b) => a - b;
+
+Arquivo: app.js  
+const { add, subtract } = require('./math');  
+console.log('Soma:', add(4, 2));  
+console.log('Subtração:', subtract(7, 3));
+
+Execução:  
+node app.js
+
+✍️ Agora é com você  
+Tarefa:  
+1. Altere o arquivo funcoes.js criado no exercício anterior para usar `exports` ao invés de `module.exports`.  
+2. Atualize o arquivo operacoes.js para usar desestruturação na importação.  
+3. Execute e teste se a multiplicação e divisão ainda funcionam corretamente.
+
+🧠 Exercício 6 – Desafio bônus com os e path
+
+✅ Exemplo resolvido  
+Arquivo: info.js  
+const os = require('os');  
+const path = require('path');  
+const sistema = os.type();  
+const versao = os.version();  
+const nomeArquivo = path.basename(__filename);  
+const diretorio = __dirname;  
+console.log(`Você está usando o sistema ${sistema} versão ${versao}.`);  
+console.log(`O script atual é "${nomeArquivo}" localizado em "${diretorio}".`);
+
+✍️ Agora é com você  
+Tarefa: Crie um arquivo chamado detalhes.js que:  
+- Use os módulos os e path  
+- Exiba uma mensagem com as informações do sistema e do caminho do arquivo
