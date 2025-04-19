@@ -30,46 +30,441 @@ O argumento "fs" indica que está sendo carregado o módulo do sistema de arquiv
 
 O retorno de require("fs") é um objeto com diversos métodos que permitem interações com o sistema de arquivos.
 
-📘 Leitura de um arquivo com fs.readFile()
-Em seguida, é utilizada a função readFile() do objeto fs.
+📘 Leitura de arquivos com fs.readFile()
+O método readFile() é utilizado para ler arquivos de forma assíncrona.
 
-fs.readFile("./files/starter.txt", (err, data) => {
- if (err) throw err;
- console.log(data);
-});
+Exemplo:
 
-Explicação detalhada:
-fs.readFile() é um método assíncrono que pertence ao objeto fs.
+fs.readFile("./files/starter.txt", (err, data) => { ... });
 
-Ele serve para ler o conteúdo de um arquivo.
+Detalhes:
+readFile() é um método do objeto fs
 
-Parâmetros da função readFile():
-Caminho do arquivo (string):
-"./files/starter.txt"
-Indica que o arquivo a ser lido está dentro da pasta files e se chama starter.txt.
+Ele é assíncrono, ou seja, não bloqueia a execução do restante do código
 
-Função de callback (function):
-(err, data) => { ... }
-Essa função é executada após o término da leitura do arquivo. Ela recebe dois argumentos:
+Ele recebe dois parâmetros obrigatórios:
 
-err: representa um possível erro ocorrido durante a leitura.
+Caminho do arquivo (string): "./files/starter.txt"
 
-data: representa o conteúdo do arquivo. O valor retornado neste caso é um Buffer, que é uma estrutura binária utilizada para representar dados de forma bruta no Node.js.
+Função callback (function): (err, data) => { ... }
 
-Corpo da função callback:
-if (err) throw err;
-Se existir um erro, ele é lançado com throw, encerrando a execução do programa com uma mensagem de erro.
+A função callback recebe:
 
-console.log(data);
-Exibe o conteúdo lido no terminal.
-Neste caso, como o conteúdo está em formato Buffer, ele não aparece como texto legível.
+err: um objeto de erro, caso algo dê errado (por exemplo, se o arquivo não existir)
 
-💡 Observação importante
-Para converter o conteúdo de Buffer em texto legível, é possível usar o método .toString() no objeto retornado:
+data: o conteúdo do arquivo, que vem no formato Buffer
+
+A verificação if (err) throw err; garante que qualquer erro seja tratado imediatamente.
+
+console.log(data); imprime o conteúdo, mas como Buffer (não legível como texto).
+
+🧠 Dica: decodificando o Buffer
+O conteúdo pode ser convertido em texto com o método .toString():
 
 console.log(data.toString());
 
-O método .toString() é um método nativo da classe Buffer.
+.toString() é um método do objeto Buffer
 
-Ele transforma os dados binários em texto (string), que pode ser lido normalmente no terminal.
+Retorna o conteúdo convertido em string legível
 
+💡 Parâmetro opcional: encoding
+O método readFile() também aceita um terceiro parâmetro opcional entre o caminho e a função callback.
+
+Esse parâmetro define a codificação do texto a ser lido. Por exemplo:
+
+fs.readFile("./files/starter.txt", "utf8", (err, data) => { ... });
+
+O valor "utf8" diz ao Node.js para retornar diretamente uma string em vez de um Buffer
+
+Assim, o conteúdo já vem pronto para ser exibido com console.log(data);
+
+Isso elimina a necessidade de usar .toString()
+
+Essa abordagem é recomendada quando se deseja trabalhar diretamente com texto.
+
+🛡️ Tratamento de erros não capturados com process.on("uncaughtException")
+Esse trecho de código é usado para interceptar erros não capturados (uncaught errors) que poderiam fazer a aplicação travar de forma inesperada.
+
+🔍 Linha adicionada:
+process.on("uncaughtException", (err) => { console.error(There was an uncaught error: ${err}); process.exit(1); });
+
+🧠 Explicação por partes:
+process
+– process é um objeto global do Node.js que fornece informações e controle sobre o processo em execução.
+– Ele pode ser acessado sem a necessidade de importação.
+
+on()
+– O método .on() é usado para ouvir eventos emitidos por objetos que herdam de EventEmitter, como o process.
+– Sintaxe: process.on(evento, callback)
+
+"uncaughtException"
+– Esse é o nome do evento que é emitido quando um erro não tratado (não capturado por try/catch) acontece durante a execução do código.
+– Permite capturar esses erros antes que a aplicação feche automaticamente.
+
+(err) => { ... }
+– Essa é a função callback que recebe o erro (err) como argumento.
+– Nela, é possível exibir uma mensagem personalizada, registrar o erro, enviar alerta, etc.
+
+console.error(...)
+– Exibe no terminal a mensagem com o erro capturado.
+– Utiliza interpolação de string com template literals para incluir o erro na mensagem.
+
+process.exit(1)
+– Encerra a execução da aplicação.
+– O número 1 indica que o processo foi encerrado por um erro (saída com falha).
+– Uma saída com 0 indicaria encerramento com sucesso.
+
+✅ Quando isso é útil?
+Esse tipo de tratamento é importante para:
+– Evitar que a aplicação seja finalizada de forma silenciosa.
+– Fazer log de erros críticos.
+– Finalizar o processo de forma controlada e consciente.
+
+📦 O que é o módulo path
+O path é um módulo nativo do Node.js usado para trabalhar com caminhos de arquivos e diretórios. Ele oferece métodos que ajudam a montar caminhos de forma segura, padronizada e compatível com qualquer sistema operacional (Windows, macOS, Linux, etc).
+
+💡 Por que usar path.join(...)?
+Em vez de escrever manualmente o caminho como uma string ("./files/starter.txt"), foi usado:
+
+path.join(__dirname, "files", "starter.txt")
+
+🧩 Explicando cada parte:
+__dirname: constante especial do Node.js que retorna o caminho absoluto da pasta onde está o arquivo atual.
+
+path.join(...): método que concatena as partes do caminho usando o separador correto do sistema operacional (/ no Linux/macOS, \ no Windows).
+
+🎯 Vantagens
+✅ Garante que o caminho funcione corretamente em qualquer sistema operacional.
+
+✅ Evita erros causados por separadores de pastas incorretos.
+
+✅ Torna o código mais robusto e confiável.
+
+📝 Escrita de Arquivo com fs.writeFile
+✅ O que foi adicionado
+Foi incluído um novo bloco de código que escreve o conteúdo "Nice to meet you." dentro de um arquivo chamado reply.txt, localizado na pasta files:
+
+fs.writeFile(
+  path.join(__dirname, "files", "reply.txt"),
+  "Nice to meet you.",
+  (err) => {
+    if (err) throw err;
+    console.log("Write complete");
+  }
+);
+
+📦 O que é fs.writeFile
+O método writeFile pertence ao módulo nativo fs (File System) do Node.js. Ele serve para criar ou sobrescrever um arquivo com o conteúdo fornecido.
+
+🧩 Explicando cada parte:
+fs.writeFile: método usado para escrever dados em um arquivo. Se o arquivo não existir, ele será criado automaticamente. Se já existir, será sobrescrito.
+
+path.join(__dirname, "files", "reply.txt"): monta de forma segura o caminho do novo arquivo chamado reply.txt, dentro da pasta files, considerando a pasta atual do arquivo como base (__dirname).
+
+"Nice to meet you.": conteúdo que será escrito no arquivo.
+
+(err) => { ... }: função de callback executada após a tentativa de escrita.
+  - Se houver erro (err), ele será lançado com throw err.
+  - Se der tudo certo, exibe a mensagem "Write complete" no terminal.
+
+🎯 Observação importante
+Esse método é assíncrono. Isso significa que ele não bloqueia o restante do código enquanto está executando a escrita no arquivo.
+
+✍️ Adicionando conteúdo com fs.appendFile
+✅ O que esse código faz
+Esse trecho de código adiciona (ou cria, se não existir) o texto "Testing text." ao final de um arquivo chamado test.txt, localizado dentro da pasta files:
+
+fs.appendFile(
+  path.join(__dirname, "files", "test.txt"),
+  "Testing text.",
+  (err) => {
+    if (err) throw err;
+    console.log("Append complete");
+  }
+);
+
+📦 O que é fs.appendFile
+O método appendFile é fornecido pelo módulo fs (File System) do Node.js. Ele serve para adicionar dados ao final de um arquivo existente.
+Se o arquivo não existir, ele será criado automaticamente.
+
+🧩 Explicando cada parte:
+fs.appendFile: método usado para anexar texto ao final de um arquivo, sem apagar o que já existe.
+
+path.join(__dirname, "files", "test.txt"): monta o caminho absoluto até o arquivo test.txt, dentro da pasta files, a partir do diretório atual onde está o script (__dirname).
+
+"Testing text.": é o conteúdo que será adicionado no final do arquivo.
+
+(err) => { ... }: função de callback executada após a tentativa de adicionar o conteúdo.
+  - Se houver erro (err), ele é tratado com throw err.
+  - Se tudo ocorrer corretamente, será exibida a mensagem "Append complete" no terminal.
+
+🧠 Dica
+Esse método também é assíncrono, o que significa que o Node.js continuará executando o restante do código enquanto a escrita ocorre em segundo plano.
+
+fs.writeFile(
+  path.join(__dirname, "files", "reply.txt"),
+  "Nice to meet you.",
+  (err) => {
+    if (err) throw err;
+
+    console.log("Write complete");
+
+    fs.appendFile(
+      path.join(__dirname, "files", "reply.txt"),
+      "\n\nYes it is.",
+      (err) => {
+        if (err) throw err;
+
+        console.log("Append complete");
+      }
+    );
+  }
+);
+
+✍️ Encadeando ações com fs.writeFile e fs.appendFile
+Essa modificação foi feita para realizar duas ações em sequência no mesmo arquivo reply.txt:
+
+Primeiro, o conteúdo "Nice to meet you." é escrito no arquivo com fs.writeFile.
+
+Em seguida, dentro do callback de fs.writeFile, é chamado o fs.appendFile para adicionar o texto "\n\nYes it is.".
+
+🧠 Contexto da alteração
+A ideia aqui é garantir que o texto só seja adicionado após a escrita ter sido completada com sucesso. Isso é importante porque as operações com o módulo fs são assíncronas, ou seja, não ocorrem de forma imediata e ordenada a menos que sejam controladas.
+
+💡 Benefício dessa abordagem
+Ao encadear o appendFile dentro do callback do writeFile, garantimos que:
+
+O arquivo já foi criado e escrito com sucesso;
+
+A adição de conteúdo será feita somente depois disso, evitando conflitos ou tentativas de adicionar texto a um arquivo que ainda não está pronto.
+
+🔄 fs.rename()
+✅ O que é?
+fs.rename é um método do módulo fs (file system) que permite renomear ou mover um arquivo.
+
+🧱 Estrutura usada no exemplo:
+fs.rename(
+ caminhoAtual,       // caminho completo do arquivo que será renomeado
+ novoCaminho,        // novo nome ou novo local para onde o arquivo será movido
+ callback          // função de callback com tratamento de erro
+)
+
+🧠 No código:
+fs.rename(
+ path.join(__dirname, "files", "reply.txt"),
+ path.join(__dirname, "files", "new-reply.txt"),
+ (err) => {
+  if (err) throw err;
+  console.log("Rename complete");
+ }
+);
+
+🧾 O que está acontecendo:
+Primeiro argumento: caminho do arquivo atual "reply.txt" dentro da pasta "files".
+
+Segundo argumento: novo nome do arquivo "new-reply.txt", no mesmo diretório.
+
+Callback: se houver erro, ele será lançado; caso contrário, a mensagem "Rename complete" será exibida.
+
+🛡️ Por que usar path.join() aqui?
+Porque ele garante que os caminhos dos arquivos sejam seguros e compatíveis com todos os sistemas operacionais, evitando erros ao construir o caminho completo.
+
+✅ Resultado:
+O arquivo "reply.txt" será renomeado para "new-reply.txt".
+
+O conteúdo permanece o mesmo:
+ Nice to meet you.
+ 
+ Yes it is.
+
+🔄 Adaptação para uso de Promises com async/await no módulo fs
+✅ O que mudou?
+Em vez de usar os métodos de callback do módulo fs, agora foi usada a versão baseada em Promises, acessada através de require("fs").promises, armazenada na constante fsPromises.
+
+📦 1. const fsPromises = require("fs").promises;
+Importa a versão do módulo fs que trabalha com Promises.
+Isso permite o uso de async/await, o que torna o código mais limpo e fácil de ler, especialmente quando se tem várias operações assíncronas em sequência.
+
+🚀 2. Função assíncrona fileOps
+Criamos uma função async chamada fileOps, para poder usar await dentro dela.
+
+🧪 Bloco try...catch
+Envolve todas as operações assíncronas para capturar qualquer erro que possa acontecer no meio do processo.
+Se algo der errado, o erro será exibido no console e a execução será interrompida com segurança.
+
+📖 Leitura do arquivo:
+const data = await fsPromises.readFile(path.join(__dirname, "files", "starter.txt"), "utf8");
+
+Método: fsPromises.readFile
+
+Parâmetros: o caminho completo do arquivo e a codificação "utf8"
+
+Retorno: o conteúdo do arquivo, que é armazenado na variável data.
+
+🗑️ Remoção do arquivo original:
+await fsPromises.unlink(path.join(__dirname, "files", "starter.txt"));
+
+Método: fsPromises.unlink
+
+Função: exclui (deleta) o arquivo do caminho fornecido.
+
+✍️ Escrita do conteúdo original em novo arquivo:
+await fsPromises.writeFile(path.join(__dirname, "files", "promise-write.txt"), data);
+
+Escreve o conteúdo lido do starter.txt dentro do novo arquivo promise-write.txt.
+
+➕ Adição de novo texto:
+await fsPromises.appendFile(path.join(__dirname, "files", "promise-write.txt"), "\n\nNice to meet you.");
+
+Método: fsPromises.appendFile
+
+Função: adiciona o texto no final do arquivo promise-write.txt.
+
+O texto \n\nNice to meet you. adiciona uma quebra de linha dupla seguida da frase.
+
+🏷️ Renomeando o arquivo:
+await fsPromises.rename(path.join(__dirname, "files", "promise-write.txt"), path.join(__dirname, "files", "promise-complete.txt"));
+
+Renomeia promise-write.txt para promise-complete.txt.
+
+📖 Leitura final (sem console):
+const newData = await fsPromises.readFile(path.join(__dirname, "files", "promise-complete.txt"), "utf8");
+
+O conteúdo final do arquivo é lido, mas não exibido no console.
+
+Fica armazenado na variável newData.
+
+✅ Resultado:
+O conteúdo de starter.txt é movido para um novo arquivo chamado promise-complete.txt.
+
+No caminho, o arquivo é deletado, o conteúdo é reaproveitado, um novo texto é adicionado, e o nome do arquivo é alterado.
+
+Tudo isso de forma limpa e organizada com async/await.
+
+📌 Diferença entre readFile e createReadStream
+
+Anteriormente, utilizamos o método readFile, que lê o conteúdo inteiro do arquivo de uma vez só, armazenando tudo na memória. Isso funciona bem para arquivos pequenos, mas pode causar problemas de performance com arquivos grandes.
+
+O método createReadStream, por outro lado, trabalha com streams, que são pedaços do arquivo enviados e processados aos poucos. Isso consome menos memória e permite processar arquivos grandes com mais eficiência.
+
+📌 O que é um stream
+
+Um stream é um tipo de abstração em Node.js que permite ler e escrever dados de forma contínua. Em vez de esperar todo o conteúdo estar pronto (como acontece com readFile), com streams você pode começar a processar os dados assim que eles começam a chegar.
+
+fs.createReadStream() cria um stream de leitura.
+
+fs.createWriteStream() cria um stream de escrita.
+
+📌 pipe()
+
+O método pipe() conecta dois streams: ele direciona automaticamente os dados que chegam no stream de leitura (rs) para o stream de escrita (ws), sem precisar tratar cada pedaço individualmente.
+
+É uma maneira mais limpa e eficiente de transferir dados de leitura para escrita, além de tratar o fluxo de forma automática, cuidando dos eventos internamente.
+
+📌 const fs = require("fs");
+Importa o módulo interno fs, que oferece funcionalidades para manipular o sistema de arquivos, como leitura, escrita, renomeação, entre outras. Retorna um objeto com diversos métodos, como createReadStream, createWriteStream, readFile, writeFile, etc.
+
+📌 const rs = fs.createReadStream("./files/lorem.txt", { encoding: "utf8" });
+Cria uma stream de leitura a partir do arquivo "lorem.txt" que está na pasta "files".
+Essa expressão retorna um objeto do tipo ReadableStream, que emite eventos conforme os dados vão sendo lidos.
+
+Parâmetros:
+
+path: caminho do arquivo a ser lido.
+
+options (opcional): neste caso, foi definido { encoding: "utf8" }, o que garante que o conteúdo lido será tratado como texto (string), e não como um Buffer.
+
+📌 const ws = fs.createWriteStream("./files/new-lorem.txt");
+Cria uma stream de escrita que vai gerar (ou sobrescrever, se já existir) o arquivo "new-lorem.txt" na mesma pasta "files".
+Retorna um objeto do tipo WritableStream, usado para escrever os dados conforme forem recebidos.
+
+Não foi passado o encoding, então os dados recebidos serão escritos da forma como forem transmitidos pela stream de leitura.
+
+📌 Código comentado:
+
+// rs.on("data", (dataChunk) => {
+// ws.write(dataChunk);
+// });
+
+Esse código é uma forma manual de fazer a leitura e escrita com streams. Vamos entender linha por linha:
+
+rs.on("data", callback): o método .on() registra um ouvinte de evento. O evento "data" é emitido toda vez que um pedaço do arquivo (chunk) é lido.
+
+O callback recebe o dataChunk, que é um pedaço do conteúdo do arquivo (em texto, já que foi passado "utf8" no rs).
+
+Dentro do callback, o método ws.write(dataChunk) escreve cada pedaço no stream de escrita, ou seja, no arquivo "new-lorem.txt".
+
+Esse método funciona bem e dá maior controle, mas é mais verboso e pode exigir controle adicional, como tratamento de erros e encerramento do stream.
+
+📌 Alternativa criada: rs.pipe(ws)
+
+Essa linha faz exatamente o mesmo que o código acima, porém de forma muito mais simples e elegante.
+O método .pipe() está disponível em streams legíveis (ReadableStream) e serve para encaminhar diretamente os dados para uma stream de escrita (WritableStream).
+
+Parâmetro:
+
+Recebe como argumento uma WritableStream, que no caso é ws.
+
+Retorno:
+
+Retorna o stream de escrita (ws) para permitir encadeamento de métodos, se necessário.
+
+Vantagens:
+
+Cuida automaticamente de eventos como data, end, error e até do fechamento dos streams.
+
+Menos código, menos chances de erro.
+
+✅ Resumo da diferença:
+
+rs.on("data", ...) + ws.write(...)
+➤ Mais controle manual. Útil quando você precisa processar ou transformar os dados antes de gravar.
+➤ Requer tratamento extra para eventos como end e error.
+
+rs.pipe(ws)
+➤ Solução ideal quando você só quer copiar dados de um lugar para outro.
+➤ Cuida automaticamente de tudo, mais limpo e eficiente.
+
+📌 if (!fs.existsSync("./new")) { ... }
+Verifica se o diretório "./new" não existe.
+
+fs.existsSync(path)
+➤ É um método síncrono que verifica se um determinado caminho (arquivo ou pasta) existe.
+➤ Retorna true se existir, false se não existir.
+➤ Recebe como parâmetro uma string com o caminho a ser verificado.
+
+📌 fs.mkdir("./new", (err) => { ... });
+Se o diretório não existir, essa linha cria o diretório "new".
+
+fs.mkdir(path, callback)
+➤ Cria um diretório em disco.
+➤ O primeiro argumento é o caminho (string).
+➤ O segundo é uma função de callback que recebe o erro, se houver.
+➤ Se a criação for bem-sucedida, o callback é executado sem erro.
+➤ Caso haja erro, ele será lançado com throw err.
+
+Retorno:
+
+A função não retorna diretamente um valor útil, o resultado é tratado dentro do callback.
+
+📌 console.log("Directory created");
+Essa mensagem será exibida no terminal somente se o diretório for criado com sucesso.
+
+📌 if (fs.existsSync("./new")) { ... }
+Esse segundo bloco verifica se o diretório "./new" existe. Se existir, ele será removido.
+
+📌 fs.rmdir("./new", (err) => { ... });
+Remove o diretório "new".
+
+fs.rmdir(path, callback)
+➤ Remove um diretório vazio.
+➤ Se o diretório contiver arquivos, o método lançará um erro.
+➤ Mesmo esquema: recebe o caminho como string e um callback com o possível erro.
+
+✅ Resumo prático
+
+Primeiro, verifica se o diretório "new" não existe. Se for o caso, ele cria o diretório.
+
+Depois, verifica se o diretório existe. Se existir, ele remove esse diretório.
+
+Os dois blocos podem acontecer juntos dependendo do tempo de execução (por exemplo, se o primeiro bloco criar o diretório e o segundo bloco for executado em seguida, ele já o remove).

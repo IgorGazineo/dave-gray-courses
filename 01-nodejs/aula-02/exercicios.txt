@@ -1,0 +1,179 @@
+📘 Exercício 01 – Leitura de arquivo
+✔️ Exemplo resolvido:
+
+Objetivo: Ler o conteúdo do arquivo starter.txt e exibir no terminal.
+
+const fs = require("fs")
+const path = require("path")
+fs.readFile(path.join(__dirname, "files", "starter.txt"), "utf8", (err, data) => {
+if (err) throw err
+console.log(data)
+})
+
+📝 Agora você:
+Leia o conteúdo do arquivo lorem.txt (que também está na pasta files) e exiba o texto no terminal.
+
+📘 Exercício 02 – Escrita em arquivo
+✔️ Exemplo resolvido:
+
+Objetivo: Criar um novo arquivo chamado reply.txt com uma mensagem.
+
+fs.writeFile(path.join(__dirname, "files", "reply.txt"), "Nice to meet you.", (err) => {
+if (err) throw err
+console.log("Write complete")
+})
+
+📝 Agora você:
+Crie um arquivo chamado greeting.txt na pasta files com a mensagem "Hello, welcome!".
+
+📘 Exercício 03 – Adição de conteúdo
+✔️ Exemplo resolvido:
+
+Objetivo: Adicionar uma nova frase ao final do arquivo reply.txt.
+
+fs.appendFile(path.join(__dirname, "files", "reply.txt"), "\n\nYes it is.", (err) => {
+if (err) throw err
+console.log("Append complete")
+})
+
+📝 Agora você:
+Adicione a frase "See you soon!" ao final do arquivo greeting.txt.
+
+📘 Exercício 04 – Renomear arquivo
+✔️ Exemplo resolvido:
+
+Objetivo: Renomear reply.txt para new-reply.txt.
+
+fs.rename(path.join(__dirname, "files", "reply.txt"), path.join(__dirname, "files", "new-reply.txt"), (err) => {
+if (err) throw err
+console.log("Rename complete")
+})
+
+📝 Agora você:
+Renomeie o arquivo greeting.txt para hello.txt.
+
+📘 Exercício 05 – Operações com Promises (async/await)
+✔️ Exemplo resolvido:
+
+Objetivo: Usar Promises para ler, excluir, escrever, adicionar conteúdo e renomear arquivos.
+
+const fsPromises = require("fs").promises
+const path = require("path")
+const fileOps = async () => {
+try {
+const data = await fsPromises.readFile(path.join(__dirname, "files", "starter.txt"), "utf8")
+console.log(data)
+await fsPromises.unlink(path.join(__dirname, "files", "starter.txt"))
+await fsPromises.writeFile(path.join(__dirname, "files", "promise-write.txt"), data)
+await fsPromises.appendFile(path.join(__dirname, "files", "promise-write.txt"), "\n\nNice to meet you.")
+await fsPromises.rename(path.join(__dirname, "files", "promise-write.txt"), path.join(__dirname, "files", "promise-complete.txt"))
+const newData = await fsPromises.readFile(path.join(__dirname, "files", "promise-complete.txt"), "utf8")
+console.log(newData)
+} catch (err) {
+console.error(err)
+}
+}
+fileOps()
+
+📝 Agora você:
+Faça algo semelhante:
+
+Leia o conteúdo de lorem.txt,
+
+Crie um novo arquivo chamado copy.txt,
+
+Copie o conteúdo para esse novo arquivo,
+
+Adicione a frase "Fim do arquivo." ao final,
+
+Renomeie o arquivo para copy-final.txt.
+
+📘 Exercício 06 – Criando um stream de leitura e escrita
+✔️ Exemplo resolvido:
+
+Objetivo: Criar um stream de leitura para lorem.txt e escrever seu conteúdo em new-lorem.txt.
+
+const fs = require("fs")
+const rs = fs.createReadStream(path.join(__dirname, "files", "lorem.txt"), { encoding: "utf8" })
+const ws = fs.createWriteStream(path.join(__dirname, "files", "new-lorem.txt"))
+rs.on("data", (dataChunk) => {
+ws.write(dataChunk)
+})
+
+📝 Agora você:
+Crie um stream de leitura para o arquivo starter.txt e escreva o conteúdo dele em um novo arquivo chamado starter-copy.txt.
+
+📘 Exercício 07 – Usando pipe para transferir dados
+✔️ Exemplo resolvido:
+
+Objetivo: Usar o método pipe() para transferir dados de lorem.txt para new-lorem.txt.
+
+const fs = require("fs")
+const rs = fs.createReadStream(path.join(__dirname, "files", "lorem.txt"), { encoding: "utf8" })
+const ws = fs.createWriteStream(path.join(__dirname, "files", "new-lorem.txt"))
+rs.pipe(ws)
+
+📝 Agora você:
+Use pipe() para transferir os dados de starter.txt para starter-copy.txt.
+
+📘 Exercício 08 – Criação e remoção de diretórios
+✔️ Exemplo resolvido:
+
+Objetivo: Criar o diretório new e removê-lo após a operação.
+
+const fs = require("fs")
+if (!fs.existsSync("./new")) {
+fs.mkdir("./new", (err) => {
+if (err) throw err
+console.log("Directory created")
+})
+}
+if (fs.existsSync("./new")) {
+fs.rmdir("./new", (err) => {
+if (err) throw err
+console.log("Directory removed")
+})
+}
+
+📝 Agora você:
+
+Crie um diretório chamado backup na raiz do projeto,
+
+Após a criação, remova o diretório backup.
+
+📘 Exercício 09 – Verificação e remoção de arquivos
+✔️ Exemplo resolvido:
+
+Objetivo: Verificar se o arquivo lorem.txt existe e, caso exista, removê-lo.
+
+const fs = require("fs")
+if (fs.existsSync("./files/lorem.txt")) {
+fs.unlink("./files/lorem.txt", (err) => {
+if (err) throw err
+console.log("File deleted")
+})
+} else {
+console.log("File does not exist")
+}
+
+📝 Agora você:
+Verifique se o arquivo starter.txt existe e, se existir, remova-o.
+
+📘 Exercício 10 – Usando streams com appendFile
+✔️ Exemplo resolvido:
+
+Objetivo: Criar um stream de leitura de lorem.txt, transferir o conteúdo para new-lorem.txt, e, depois, adicionar uma linha com appendFile.
+
+const fs = require("fs")
+const rs = fs.createReadStream(path.join(__dirname, "files", "lorem.txt"), { encoding: "utf8" })
+const ws = fs.createWriteStream(path.join(__dirname, "files", "new-lorem.txt"))
+rs.pipe(ws)
+ws.on("finish", () => {
+fs.appendFile(path.join(__dirname, "files", "new-lorem.txt"), "\n\nThis is new content.", (err) => {
+if (err) throw err
+console.log("Append complete")
+})
+})
+
+📝 Agora você:
+Use streams para copiar o conteúdo de starter.txt para starter-copy.txt e, depois, adicione a frase "End of file." ao final do arquivo starter-copy.txt.
