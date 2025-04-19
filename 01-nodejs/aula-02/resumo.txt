@@ -1,0 +1,75 @@
+🧠 Resumo – Aula 02 (Node.js com File System - Parte 1)
+
+Módulo nativo fs (File System) do Node.js.
+
+📦 O que é o módulo fs
+O módulo fs (abreviação de File System) faz parte do núcleo do Node.js. Ele permite que o programa interaja diretamente com o sistema de arquivos do computador.
+
+Com ele, é possível:
+
+Ler arquivos
+
+Escrever arquivos
+
+Renomear arquivos
+
+Criar ou remover pastas
+
+E muito mais
+
+Esse módulo não precisa ser instalado via npm, pois já vem embutido no Node.js.
+
+✅ Importação do módulo fs
+A constante fs é declarada e recebe o conteúdo do módulo nativo:
+
+const fs = require("fs");
+
+O método require() carrega o módulo nativo do Node.js.
+
+O argumento "fs" indica que está sendo carregado o módulo do sistema de arquivos.
+
+O retorno de require("fs") é um objeto com diversos métodos que permitem interações com o sistema de arquivos.
+
+📘 Leitura de um arquivo com fs.readFile()
+Em seguida, é utilizada a função readFile() do objeto fs.
+
+fs.readFile("./files/starter.txt", (err, data) => {
+ if (err) throw err;
+ console.log(data);
+});
+
+Explicação detalhada:
+fs.readFile() é um método assíncrono que pertence ao objeto fs.
+
+Ele serve para ler o conteúdo de um arquivo.
+
+Parâmetros da função readFile():
+Caminho do arquivo (string):
+"./files/starter.txt"
+Indica que o arquivo a ser lido está dentro da pasta files e se chama starter.txt.
+
+Função de callback (function):
+(err, data) => { ... }
+Essa função é executada após o término da leitura do arquivo. Ela recebe dois argumentos:
+
+err: representa um possível erro ocorrido durante a leitura.
+
+data: representa o conteúdo do arquivo. O valor retornado neste caso é um Buffer, que é uma estrutura binária utilizada para representar dados de forma bruta no Node.js.
+
+Corpo da função callback:
+if (err) throw err;
+Se existir um erro, ele é lançado com throw, encerrando a execução do programa com uma mensagem de erro.
+
+console.log(data);
+Exibe o conteúdo lido no terminal.
+Neste caso, como o conteúdo está em formato Buffer, ele não aparece como texto legível.
+
+💡 Observação importante
+Para converter o conteúdo de Buffer em texto legível, é possível usar o método .toString() no objeto retornado:
+
+console.log(data.toString());
+
+O método .toString() é um método nativo da classe Buffer.
+
+Ele transforma os dados binários em texto (string), que pode ser lido normalmente no terminal.
+
