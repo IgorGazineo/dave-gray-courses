@@ -1,0 +1,11 @@
+Step 1: In the file math.js
+
+Create a function called subtract that takes two numbers and returns the result of subtracting them.
+
+Export this function using module.exports.
+
+Step 2: In the file server.js
+
+Import the subtract function using require('./math').
+
+Use console.log to display the result of calling the function with two numbers of your choice.

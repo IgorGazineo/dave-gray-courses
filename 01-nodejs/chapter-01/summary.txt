@@ -1,0 +1,39 @@
+🧠 What Is global in Node.js?
+In Node.js, global is like the window object in the browser. It’s an object that is available everywhere in your code, without needing to import or declare it.
+
+It contains functions, variables, and objects that are always accessible in any file or module.
+
+----------------------------------------------------------
+
+🔹 What are Core Modules in Node.js?
+
+Core modules are built-in tools that come with Node.js. You don’t need to install them — they are ready to use.
+
+🧪 Example with path:
+
+const path = require('path');
+const filePath = path.join(__dirname, 'example.txt');
+console.log(filePath);
+
+This prints the full path to the file.
+
+----------------------------------------------------------------
+
+The node:os module provides operating system-related utility methods and properties. It can be accessed using:
+
+Common js: const os = require('node:os');
+ECMAScript: import os from 'node:os';
+
+----------------------------------------------------------
+
+__dirname: The directory name of the current module. 
+__filename: The file name of the current module. This is the current module file's absolute path with symlinks resolved.
+
+For a main program this is not necessarily the same as the file name used in the command line.
+
+------------------------------------------------------------
+
+The node:path module provides utilities for working with file and directory paths. It can be accessed using:
+
+Common js: const path = require('node:path');
+ECMAScript: import path from 'node:path';
